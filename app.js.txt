@@ -1,0 +1,43 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, addDoc, collection, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+
+// Firebase configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyBWnoNZkpTHRI9MMU5CIgbAQZRgNFGJUH8",
+    authDomain: "inspection-report-6921d.firebaseapp.com",
+    databaseURL: "https://inspection-report-6921d-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "inspection-report-6921d",
+    storageBucket: "inspection-report-6921d.appspot.com",
+    messagingSenderId: "1084385854572",
+    appId: "1:1084385854572:web:55956cd6dce5961a0b4449",
+    measurementId: "G-K5YPHTMX06"
+};
+
+// Initialize Firebase
+initializeApp(firebaseConfig);
+const db = getFirestore();
+const storage = getStorage();
+
+async function submitDefect() {
+    const fileInput = document.getElementById('photo');
+    const location = document.getElementById('location').value;
+    const description = document.getElementById('description').value;
+    const file = fileInput.files[0];
+    const storageRef = ref(storage, `images/${file.name}`);
+
+    try {
+        const snapshot = await uploadBytes(storageRef, file);
+        const downloadURL = await getDownloadURL(snapshot.ref);
+        await addDoc(collection(db, 'reports'), {
+            imageUrl: downloadURL,
+            location: location,
+            description: description,
+            timestamp: serverTimestamp()
+        });
+        alert('Defect reported successfully.');
+    } catch (error) {
+        console.error('Error submitting defect: ', error);
+        alert('Error submitting defect.');
+    }
+}

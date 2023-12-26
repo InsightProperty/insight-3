@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Property Inspection Report</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="module" src="app.js"></script>
+</head>
+<body>
+    <h1>Property Inspection Report</h1>
+    <form id="defectForm">
+        <label for="photo">Upload Photo:</label>
+        <input type="file" id="photo" accept="image/*"><br><br>
+
+        <label for="location">Location:</label>
+        <input type="text" id="location" placeholder="Location"><br><br>
+
+        <label for="description">Defect Description:</label>
+        <textarea id="description" placeholder="Defect Description"></textarea><br><br>
+
+        <button type="button" onclick="submitDefect()">Submit Defect</button>
+    </form>
+</body>
+</html>
